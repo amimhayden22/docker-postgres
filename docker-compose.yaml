@@ -1,0 +1,29 @@
+services:
+  db:
+    image: postgres:17
+    container_name: postgres-db
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - nginx-proxy-network
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    restart: always
+    environment:
+      ADMIN_DEFAULT_SERVER: db
+    ports:
+      - 8081:8080
+    networks:
+      - nginx-proxy-network
+
+volumes:
+  pgdata:
+
+networks:
+  nginx-proxy-network:
+    external: true
